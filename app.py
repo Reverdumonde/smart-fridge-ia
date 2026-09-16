@@ -29,7 +29,7 @@ app.secret_key = os.environ.get("SECRET_KEY", "smartfridge_ib_secret_key_2024")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(BASE_DIR)
-DB_PATH = os.path.join(BASE_DIR, "fridge.db")
+DB_PATH = os.environ.get("DB_PATH", os.path.join(BASE_DIR, "fridge.db"))
 RECIPES_PATH = os.path.join(BASE_DIR, "recipes.json")
 
 # Max days before we consider an ingredient "fresh" (used to normalise urgency)
@@ -95,6 +95,9 @@ def init_db():
                 FOREIGN KEY (user_id) REFERENCES users(id)
             );
         """)
+
+
+    init_db()
 
 
 # ─────────────────────────────────────────
