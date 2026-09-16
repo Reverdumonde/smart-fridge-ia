@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+{% block title %}Smart Fridge | My Fridge{% endblock %}
+
+{% block extra_head %}
+<style>
+  .page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .page-header h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+  }
+
+  .summary-chips {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+
+  .summary-chip {
+    padding: 0.65rem 0.8rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.56);
+    border: 1px solid rgba(185, 172, 149, 0.7);
+    min-width: 110px;
+  }
+
+  .metric-label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .metric-value {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.8fr);
+    gap: 1rem;
+  }
+
+  .form-panel .panel-inner,
+  .legend-panel .panel-inner,
+  .ingredient-panel .panel-inner,
+  .empty-panel .panel-inner {
+    padding: 1.35rem;
+  }
+
+  .form-panel h2,
+  .legend-panel h2,
+  .ingredient-panel h2,
+  .empty-panel h2 {
+    margin-top: 0.75rem;
+    font-size: 1.2rem;
+  }
+
+  .form-panel p,
+  .legend-panel p,
+  .empty-panel p {
+    margin-top: 0.5rem;
+    color: var(--muted);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 0.75rem;
+    align-items: end;
+    margin-top: 1rem;
+  }
+
+  .legend-list {
+    display: grid;
+    gap: 0.7rem;
+    margin-top: 1rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(185, 172, 149, 0.65);
+    color: var(--text);
+  }
+
+  .legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+  }
+
+  .swatch-high { background: var(--danger); }
+  .swatch-medium { background: var(--warning); }
+  .swatch-low { background: var(--success); }
+
+  .ingredient-panel,
+  .empty-panel {
+    margin-top: 1rem;
+  }
+
+  .ingredient-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .ingredient-card {
+    padding: 1rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(185, 172, 149, 0.72);
+    border-top: 4px solid var(--line-strong);
+  }
+
+  .ingredient-card.high { border-top-color: var(--danger); }
+  .ingredient-card.medium { border-top-color: var(--warning); }
+  .ingredient-card.low { border-top-color: var(--success); }
+
+  .ingredient-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .ingredient-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+
+  .delete-btn {
+    min-width: 34px;
+    min-height: 34px;
+    border-radius: 999px;
+    border: 1px solid rgba(164, 83, 58, 0.16);
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--danger);
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .ingredient-meta {
+    margin-top: 0.85rem;
+    display: grid;
+    gap: 0.35rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .progress-wrap {
+    margin-top: 0.85rem;
+  }
+
+  .progress-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .score-bar-bg {
+    height: 10px;
+    margin-top: 0.4rem;
+    border-radius: 999px;
+    background: rgba(108, 116, 111, 0.14);
+    overflow: hidden;
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+  }
+
+  .empty-panel {
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .top-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page">
+  {% set ns = namespace(expiring=0, no_expiry=0) %}
+  {% for ing in ingredients %}
+    {% if ing.days_left is not none and ing.days_left <= 5 %}
+      {% set ns.expiring = ns.expiring + 1 %}
+    {% endif %}
+    {% if not ing.expiration_date %}
+      {% set ns.no_expiry = ns.no_expiry + 1 %}
+    {% endif %}
+  {% endfor %}
+
+  <div class="page-header">
+    <div>
+      <h1>{{ session.username }}'s Fridge</h1>
+    </div>
+
+    <div class="summary-chips">
+      <div class="summary-chip">
+        <span class="metric-label">Items</span>
+        <span class="metric-value">{{ ingredients|length }}</span>
+      </div>
+      <div class="summary-chip">
+        <span class="metric-label">Expiring Soon</span>
+        <span class="metric-value">{{ ns.expiring }}</span>
+      </div>
+      <div class="summary-chip">
+        <span class="metric-label">No Expiry</span>
+        <span class="metric-value">{{ ns.no_expiry }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="top-grid">
+    <section class="panel form-panel">
+      <div class="panel-inner">
+        <span class="section-kicker">Add Ingredient</span>
+        <h2>Update your fridge</h2>
+        <p>Add an ingredient and an optional expiration date.</p>
+
+        <form method="POST" action="{{ url_for('add_ingredient') }}">
+          <div class="form-row">
+            <div class="form-group" style="margin:0;">
+              <label for="name">Ingredient name</label>
+              <input type="text" id="name" name="name" placeholder="tomato, milk, chicken" required />
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label for="expiration_date">Expiration date</label>
+              <input type="date" id="expiration_date" name="expiration_date" />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <aside class="panel legend-panel">
+      <div class="panel-inner">
+        <span class="section-kicker">Urgency</span>
+        <h2>Color guide</h2>
+        <div class="legend-list">
+          <div class="legend-item"><span class="legend-swatch swatch-high"></span>High: 5 days or less</div>
+          <div class="legend-item"><span class="legend-swatch swatch-medium"></span>Medium: 6 to 9 days</div>
+          <div class="legend-item"><span class="legend-swatch swatch-low"></span>Low: 10 days or more</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  {% if ingredients %}
+    <section class="panel ingredient-panel">
+      <div class="panel-inner">
+        <span class="section-kicker">Ingredients</span>
+        <h2>Current items</h2>
+
+        <div class="ingredient-grid">
+          {% for ing in ingredients %}
+            <article class="ingredient-card {{ ing.urgency_label }}">
+              <div class="ingredient-top">
+                <div>
+                  <div class="ingredient-name">{{ ing.name }}</div>
+                  <div class="mt-1">
+                    <span class="badge badge-{{ ing.urgency_label }}">{{ ing.urgency_label }} urgency</span>
+                  </div>
+                </div>
+                <form method="POST" action="{{ url_for('delete_ingredient', ing_id=ing.id) }}">
+                  <button type="submit" class="delete-btn" title="Remove ingredient">X</button>
+                </form>
+              </div>
+
+              <div class="ingredient-meta">
+                <span>Added: {{ ing.date_added }}</span>
+                {% if ing.expiration_date %}
+                  <span>
+                    Expires: {{ ing.expiration_date }}
+                    {% if ing.days_left is not none %}
+                      {% if ing.days_left < 0 %}
+                        | expired
+                      {% elif ing.days_left == 0 %}
+                        | today
+                      {% else %}
+                        | {{ ing.days_left }} day{{ "s" if ing.days_left != 1 else "" }} left
+                      {% endif %}
+                    {% endif %}
+                  </span>
+                {% else %}
+                  <span>No expiry date</span>
+                {% endif %}
+              </div>
+
+              {% if ing.expiration_date %}
+                <div class="progress-wrap">
+                  <div class="progress-head">
+                    <span>Urgency</span>
+                    <span>{{ (ing.urgency * 100)|round|int }}%</span>
+                  </div>
+                  <div class="score-bar-bg">
+                    <div
+                      class="score-bar-fill"
+                      style="width:{{ (ing.urgency * 100)|round|int }}%; background:{% if ing.urgency_label == 'high' %}var(--danger){% elif ing.urgency_label == 'medium' %}var(--warning){% else %}var(--success){% endif %};"
+                    ></div>
+                  </div>
+                </div>
+              {% endif %}
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  {% else %}
+    <section class="panel empty-panel">
+      <div class="panel-inner">
+        <span class="section-kicker">No Ingredients</span>
+        <h2>Your fridge is empty</h2>
+        <p>Add a few ingredients to get started.</p>
+      </div>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}

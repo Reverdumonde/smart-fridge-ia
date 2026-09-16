@@ -1,0 +1,302 @@
+[
+  {
+    "id": 11,
+    "name": "Scrambled Eggs on Toast",
+    "ingredients": ["egg", "bread", "butter", "milk", "salt", "pepper"],
+    "steps": [
+      "Crack the eggs into a bowl, add a splash of milk, and whisk with salt and pepper.",
+      "Melt butter in a non-stick pan over low heat.",
+      "Pour in the eggs and stir gently with a spatula as they cook.",
+      "Remove from heat while still slightly runny; they will finish cooking from residual heat.",
+      "Toast the bread until golden and butter it lightly.",
+      "Spoon the scrambled eggs over the toast and serve immediately."
+    ],
+    "difficulty": "Easy",
+    "time": "10 mins"
+  },
+  {
+    "id": 12,
+    "name": "Garlic Butter Rice",
+    "ingredients": ["rice", "garlic", "butter", "salt", "green onion"],
+    "steps": [
+      "Cook the rice and keep it warm.",
+      "Melt butter in a pan over medium heat.",
+      "Add minced garlic and fry for 1 minute until fragrant.",
+      "Add the cooked rice and toss to coat in the garlic butter.",
+      "Season with salt and stir for 2 minutes.",
+      "Garnish with chopped green onion and serve hot."
+    ],
+    "difficulty": "Easy",
+    "time": "15 mins"
+  },
+  {
+    "id": 13,
+    "name": "Tomato Egg Stir-Fry",
+    "ingredients": ["tomato", "egg", "green onion", "salt", "sugar", "soy sauce"],
+    "steps": [
+      "Beat the eggs with a pinch of salt.",
+      "Heat oil in a pan and scramble the eggs until just set; remove and set aside.",
+      "Add chopped tomatoes to the pan and cook until softened.",
+      "Season with a little sugar, salt, and soy sauce.",
+      "Return the eggs to the pan and stir together for 1 minute.",
+      "Garnish with green onion and serve over rice."
+    ],
+    "difficulty": "Easy",
+    "time": "15 mins"
+  },
+  {
+    "id": 14,
+    "name": "Creamy Mushroom Pasta",
+    "ingredients": ["pasta", "mushroom", "garlic", "cream", "butter", "salt", "pepper"],
+    "steps": [
+      "Cook the pasta in salted water until al dente.",
+      "Melt butter in a pan and sauté sliced mushrooms until golden.",
+      "Add minced garlic and cook for 1 minute.",
+      "Pour in the cream and simmer gently for 3 minutes.",
+      "Season with salt and pepper.",
+      "Toss the drained pasta in the sauce and serve hot."
+    ],
+    "difficulty": "Medium",
+    "time": "25 mins"
+  },
+  {
+    "id": 15,
+    "name": "Vegetable Fried Rice",
+    "ingredients": ["rice", "egg", "carrot", "onion", "garlic", "soy sauce", "green onion"],
+    "steps": [
+      "Use cold, day-old rice for the best texture.",
+      "Heat oil in a wok and scramble the egg; set aside.",
+      "Sauté diced onion, carrot, and garlic until softened.",
+      "Add the rice and toss over high heat for 3 minutes.",
+      "Pour in soy sauce and return the egg to the pan.",
+      "Garnish with green onion and serve."
+    ],
+    "difficulty": "Easy",
+    "time": "20 mins"
+  },
+  {
+    "id": 16,
+    "name": "Potato Soup",
+    "ingredients": ["potato", "onion", "garlic", "butter", "cream", "salt", "pepper"],
+    "steps": [
+      "Peel and dice the potatoes and onion.",
+      "Melt butter in a pot and sauté onion and garlic until soft.",
+      "Add the potatoes and 3 cups of water; simmer for 20 minutes.",
+      "Blend until smooth.",
+      "Stir in the cream and season with salt and pepper.",
+      "Simmer for 5 more minutes and serve warm."
+    ],
+    "difficulty": "Easy",
+    "time": "30 mins"
+  },
+  {
+    "id": 17,
+    "name": "Caprese Sandwich",
+    "ingredients": ["bread", "tomato", "mozzarella", "basil", "olive oil", "salt"],
+    "steps": [
+      "Slice the bread, tomato, and mozzarella.",
+      "Drizzle olive oil over the bread slices.",
+      "Layer tomato, mozzarella, and fresh basil leaves.",
+      "Season with a pinch of salt.",
+      "Close the sandwich and press gently.",
+      "Serve fresh, or toast in a pan for a warm version."
+    ],
+    "difficulty": "Easy",
+    "time": "10 mins"
+  },
+  {
+    "id": 18,
+    "name": "Chicken Noodle Soup",
+    "ingredients": ["chicken", "carrot", "onion", "garlic", "noodle", "salt", "pepper"],
+    "steps": [
+      "Dice the chicken, carrot, and onion.",
+      "Sauté onion and garlic in a pot until fragrant.",
+      "Add the chicken and cook until no longer pink.",
+      "Pour in 4 cups of water and add the carrots; simmer for 15 minutes.",
+      "Add the noodles and cook until tender.",
+      "Season with salt and pepper and serve hot."
+    ],
+    "difficulty": "Medium",
+    "time": "30 mins"
+  },
+  {
+    "id": 19,
+    "name": "Avocado Egg Salad",
+    "ingredients": ["avocado", "egg", "lemon", "salt", "pepper", "bread"],
+    "steps": [
+      "Boil the eggs for 9 minutes, then cool and peel them.",
+      "Chop the boiled eggs into small pieces.",
+      "Mash the avocado in a bowl with lemon juice.",
+      "Mix in the chopped eggs, salt, and pepper.",
+      "Toast the bread.",
+      "Spread the avocado egg mixture over the toast and serve."
+    ],
+    "difficulty": "Easy",
+    "time": "15 mins"
+  },
+  {
+    "id": 20,
+    "name": "Stir-Fried Broccoli and Garlic",
+    "ingredients": ["broccoli", "garlic", "soy sauce", "sesame oil", "salt"],
+    "steps": [
+      "Cut the broccoli into bite-sized florets.",
+      "Blanch the broccoli in boiling water for 2 minutes, then drain.",
+      "Heat sesame oil in a pan and add minced garlic.",
+      "Add the broccoli and stir-fry for 3 minutes.",
+      "Pour in soy sauce and season with salt.",
+      "Toss well and serve as a side dish."
+    ],
+    "difficulty": "Easy",
+    "time": "15 mins"
+  },
+  {
+    "id": 21,
+    "name": "French Toast",
+    "ingredients": ["bread", "egg", "milk", "butter", "sugar", "cinnamon"],
+    "steps": [
+      "Whisk together eggs, milk, sugar, and a pinch of cinnamon.",
+      "Dip each slice of bread into the mixture, coating both sides.",
+      "Melt butter in a pan over medium heat.",
+      "Cook each slice for 2–3 minutes per side until golden.",
+      "Serve warm.",
+      "Top with honey or fruit if desired."
+    ],
+    "difficulty": "Easy",
+    "time": "15 mins"
+  },
+  {
+    "id": 22,
+    "name": "Lentil Soup",
+    "ingredients": ["lentil", "carrot", "onion", "garlic", "tomato", "cumin", "salt"],
+    "steps": [
+      "Rinse the lentils under cold water.",
+      "Sauté diced onion, carrot, and garlic in a pot until soft.",
+      "Add cumin and stir for 30 seconds.",
+      "Add chopped tomato, lentils, and 4 cups of water.",
+      "Simmer for 25 minutes until the lentils are tender.",
+      "Season with salt and serve warm."
+    ],
+    "difficulty": "Medium",
+    "time": "35 mins"
+  },
+  {
+    "id": 23,
+    "name": "Cucumber Salad",
+    "ingredients": ["cucumber", "red onion", "olive oil", "salt", "pepper", "oregano"],
+    "steps": [
+      "Thinly slice the cucumber and red onion.",
+      "Place them in a bowl.",
+      "Drizzle with olive oil.",
+      "Season with salt, pepper, and oregano.",
+      "Toss gently to combine.",
+      "Chill for 15 minutes before serving."
+    ],
+    "difficulty": "Easy",
+    "time": "10 mins"
+  },
+  {
+    "id": 24,
+    "name": "Cheese Omelette",
+    "ingredients": ["egg", "cheese", "butter", "salt", "pepper"],
+    "steps": [
+      "Beat the eggs with salt and pepper.",
+      "Melt butter in a non-stick pan over low heat.",
+      "Pour in the eggs and let them set slightly.",
+      "Sprinkle grated cheese over one half.",
+      "Fold the omelette over the cheese.",
+      "Cook for another minute and slide onto a plate."
+    ],
+    "difficulty": "Easy",
+    "time": "10 mins"
+  },
+  {
+    "id": 25,
+    "name": "Honey Garlic Chicken",
+    "ingredients": ["chicken", "garlic", "honey", "soy sauce", "butter", "salt"],
+    "steps": [
+      "Cut the chicken into bite-sized pieces and season with salt.",
+      "Melt butter in a pan and cook the chicken until golden.",
+      "Add minced garlic and fry for 1 minute.",
+      "Mix honey and soy sauce, then pour into the pan.",
+      "Simmer until the sauce thickens and coats the chicken.",
+      "Serve over rice."
+    ],
+    "difficulty": "Medium",
+    "time": "25 mins"
+  },
+  {
+    "id": 26,
+    "name": "Banana Smoothie",
+    "ingredients": ["banana", "milk", "honey", "yogurt"],
+    "steps": [
+      "Peel the banana and break it into chunks.",
+      "Add the banana, milk, yogurt, and honey to a blender.",
+      "Blend until smooth and creamy.",
+      "Taste and add more honey if desired.",
+      "Pour into a glass.",
+      "Serve cold."
+    ],
+    "difficulty": "Easy",
+    "time": "5 mins"
+  },
+  {
+    "id": 27,
+    "name": "Onion Soup",
+    "ingredients": ["onion", "garlic", "butter", "bread", "cheese", "salt", "pepper"],
+    "steps": [
+      "Thinly slice the onions.",
+      "Melt butter in a pot and cook the onions slowly for 20 minutes until caramelised.",
+      "Add minced garlic and cook for 1 minute.",
+      "Pour in 3 cups of water and simmer for 10 minutes.",
+      "Season with salt and pepper.",
+      "Top with toasted bread and melted cheese before serving."
+    ],
+    "difficulty": "Medium",
+    "time": "35 mins"
+  },
+  {
+    "id": 28,
+    "name": "Pasta Primavera",
+    "ingredients": ["pasta", "broccoli", "carrot", "garlic", "olive oil", "salt", "pepper"],
+    "steps": [
+      "Cook the pasta in salted water until al dente.",
+      "Cut the broccoli and carrot into small pieces.",
+      "Heat olive oil and sauté garlic for 1 minute.",
+      "Add the vegetables and stir-fry for 5 minutes.",
+      "Toss in the drained pasta.",
+      "Season with salt and pepper and serve."
+    ],
+    "difficulty": "Easy",
+    "time": "20 mins"
+  },
+  {
+    "id": 29,
+    "name": "Egg Fried Noodles",
+    "ingredients": ["noodle", "egg", "garlic", "soy sauce", "green onion", "sesame oil"],
+    "steps": [
+      "Cook the noodles according to the package and drain.",
+      "Heat sesame oil in a wok and scramble the egg; set aside.",
+      "Sauté minced garlic until fragrant.",
+      "Add the noodles and toss over high heat.",
+      "Pour in soy sauce and return the egg.",
+      "Garnish with green onion and serve."
+    ],
+    "difficulty": "Easy",
+    "time": "15 mins"
+  },
+  {
+    "id": 30,
+    "name": "Baked Potato with Cheese",
+    "ingredients": ["potato", "butter", "cheese", "salt", "pepper", "green onion"],
+    "steps": [
+      "Wash the potatoes and pierce them several times with a fork.",
+      "Bake at 200°C for 45 minutes until soft.",
+      "Cut a slit in the top and fluff the inside with a fork.",
+      "Add butter, salt, and pepper.",
+      "Sprinkle grated cheese over the top and let it melt.",
+      "Garnish with chopped green onion and serve."
+    ],
+    "difficulty": "Easy",
+    "time": "50 mins"
+  }
+]

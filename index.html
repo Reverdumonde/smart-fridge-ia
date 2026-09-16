@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Smart Fridge | Home{% endblock %}
+
+{% block extra_head %}
+<style>
+  .hero-panel .panel-inner {
+    padding: 1.6rem;
+  }
+
+  .hero-panel h1 {
+    margin-top: 0.9rem;
+    font-size: clamp(2.3rem, 6vw, 3.8rem);
+    max-width: 12ch;
+  }
+
+  .hero-panel p {
+    max-width: 54ch;
+    margin-top: 0.9rem;
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    margin-top: 1.4rem;
+  }
+
+  @media (max-width: 520px) {
+    .cta-row {
+      flex-direction: column;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page">
+  <section class="panel hero-panel">
+    <div class="panel-inner">
+      <span class="section-kicker">Smart Fridge</span>
+      <h1>Track ingredients and use them before they go bad.</h1>
+      <p>
+        Smart Fridge helps you save what is in your fridge, check which items are expiring soon,
+        and find recipes based on what you already have.
+      </p>
+
+      <div class="cta-row">
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+        <a href="{{ url_for('login') }}" class="btn btn-outline">Log In</a>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
