@@ -538,7 +538,7 @@ def recommendations():
         else get_user_ingredients(session["user_id"])
     )
 
-    if not ingredients and not session.get("guest"):
+    if not ingredients:
         flash("Add some ingredients to your fridge first!", "warning")
         return redirect(url_for("dashboard"))
 
