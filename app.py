@@ -18,7 +18,7 @@ import sqlite3
 import json
 import os
 import math
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import functools
 
 # ─────────────────────────────────────────
@@ -104,7 +104,7 @@ def login_required(view):
     """Decorator: redirect to /login if the user is not logged in."""
     @functools.wraps(view)
     def wrapped(*args, **kwargs):
-        if "user_id" not in session:
+        if "user_id" not in session and not session.get("guest"):
             flash("Please log in to access this page.", "warning")
             return redirect(url_for("login"))
         return view(*args, **kwargs)
@@ -324,6 +324,30 @@ def get_user_ingredients(user_id):
     return result
 
 
+def get_guest_ingredients():
+    """Return temporary demo ingredients for the read-only guest experience."""
+    with open(RECIPES_PATH, encoding="utf-8") as f:
+        recipes = json.load(f)
+
+    demo_names = recipes[0]["ingredients"] if recipes else [
+        "tomato", "onion", "garlic"
+    ]
+    expiration_date = (date.today() + timedelta(days=3)).isoformat()
+
+    return [
+        {
+            "id": index,
+            "name": name,
+            "date_added": date.today().isoformat(),
+            "expiration_date": expiration_date,
+            "days_left": 3,
+            "urgency": compute_urgency(3),
+            "urgency_label": urgency_label(compute_urgency(3)),
+        }
+        for index, name in enumerate(demo_names, start=1)
+    ]
+
+
 # ─────────────────────────────────────────
 # Routes — Authentication
 # ─────────────────────────────────────────
@@ -384,6 +408,16 @@ def login():
     return render_template("login.html")
 
 
+@app.route("/guest")
+def guest():
+    """Start a read-only demo session without requiring registration."""
+    session.clear()
+    session["guest"] = True
+    session["username"] = "Guest"
+    flash("You are viewing the demo with sample fridge ingredients.", "info")
+    return redirect(url_for("dashboard"))
+
+
 @app.route("/logout")
 def logout():
     """Clear the session and redirect to the landing page."""
@@ -399,14 +433,25 @@ def logout():
 @login_required
 def dashboard():
     """Main fridge view: show all ingredients with urgency colour coding."""
-    ingredients = get_user_ingredients(session["user_id"])
-    return render_template("dashboard.html", ingredients=ingredients)
+    is_guest = session.get("guest", False)
+    ingredients = (
+        get_guest_ingredients()
+        if is_guest
+        else get_user_ingredients(session["user_id"])
+    )
+    return render_template(
+        "dashboard.html", ingredients=ingredients, is_guest=is_guest
+    )
 
 
 @app.route("/add_ingredient", methods=["POST"])
 @login_required
 def add_ingredient():
     """Add a new ingredient to the user's fridge."""
+    if session.get("guest"):
+        flash("Guest mode is read-only. Register to save ingredients.", "warning")
+        return redirect(url_for("dashboard"))
+
     name    = request.form.get("name", "").strip()
     exp     = request.form.get("expiration_date", "").strip()
 
@@ -430,6 +475,10 @@ def add_ingredient():
 @login_required
 def delete_ingredient(ing_id):
     """Remove a single ingredient (only if it belongs to the current user)."""
+    if session.get("guest"):
+        flash("Guest mode is read-only. Register to edit your fridge.", "warning")
+        return redirect(url_for("dashboard"))
+
     with get_db() as conn:
         conn.execute(
             "DELETE FROM ingredients WHERE id = ? AND user_id = ?",
@@ -451,7 +500,11 @@ def recommendations():
     This calls recommend_recipes() which implements the core scoring logic.
     No AI or external API is involved in selecting or ranking recipes.
     """
-    ingredients = get_user_ingredients(session["user_id"])
+    ingredients = (
+        get_guest_ingredients()
+        if session.get("guest")
+        else get_user_ingredients(session["user_id"])
+    )
 
     if not ingredients:
         flash("Add some ingredients to your fridge first!", "warning")
