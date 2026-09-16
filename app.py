@@ -24,13 +24,30 @@ import functools
 # ─────────────────────────────────────────
 # App Configuration
 # ─────────────────────────────────────────
-app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "smartfridge_ib_secret_key_2024")
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(BASE_DIR)
 DB_PATH = os.environ.get("DB_PATH", os.path.join(BASE_DIR, "fridge.db"))
 RECIPES_PATH = os.path.join(BASE_DIR, "recipes.json")
+
+
+def find_project_file(filename):
+    """Find a project file when the repository has an extra folder level."""
+    direct_path = os.path.join(BASE_DIR, filename)
+    if os.path.exists(direct_path):
+        return direct_path
+
+    for root, _, files in os.walk(BASE_DIR):
+        if filename in files:
+            return os.path.join(root, filename)
+    return direct_path
+
+
+TEMPLATES_DIR = find_project_file("base.html")
+TEMPLATES_DIR = os.path.dirname(TEMPLATES_DIR)
+RECIPES_PATH = find_project_file("recipes.json")
+
+app = Flask(__name__, template_folder=TEMPLATES_DIR)
+app.secret_key = os.environ.get("SECRET_KEY", "smartfridge_ib_secret_key_2024")
 
 # Max days before we consider an ingredient "fresh" (used to normalise urgency)
 MAX_FRESHNESS_DAYS = 14
