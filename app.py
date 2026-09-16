@@ -18,7 +18,7 @@ import sqlite3
 import json
 import os
 import math
-from datetime import datetime, date, timedelta
+from datetime import datetime, date
 import functools
 
 # ─────────────────────────────────────────
@@ -325,27 +325,18 @@ def get_user_ingredients(user_id):
 
 
 def get_guest_ingredients():
-    """Return temporary demo ingredients for the read-only guest experience."""
-    with open(RECIPES_PATH, encoding="utf-8") as f:
-        recipes = json.load(f)
-
-    demo_names = recipes[0]["ingredients"] if recipes else [
-        "tomato", "onion", "garlic"
-    ]
-    expiration_date = (date.today() + timedelta(days=3)).isoformat()
-
-    return [
-        {
-            "id": index,
-            "name": name,
-            "date_added": date.today().isoformat(),
-            "expiration_date": expiration_date,
-            "days_left": 3,
-            "urgency": compute_urgency(3),
-            "urgency_label": urgency_label(compute_urgency(3)),
-        }
-        for index, name in enumerate(demo_names, start=1)
-    ]
+    """Return temporary guest ingredients stored only in the current session."""
+    result = []
+    for item in session.get("guest_ingredients", []):
+        days_left = compute_days_left(item.get("expiration_date"))
+        urgency = compute_urgency(days_left)
+        result.append({
+            **item,
+            "days_left": days_left,
+            "urgency": urgency,
+            "urgency_label": urgency_label(urgency),
+        })
+    return result
 
 
 # ─────────────────────────────────────────
@@ -410,11 +401,12 @@ def login():
 
 @app.route("/guest")
 def guest():
-    """Start a read-only demo session without requiring registration."""
+    """Start a temporary guest session without requiring registration."""
     session.clear()
     session["guest"] = True
     session["username"] = "Guest"
-    flash("You are viewing the demo with sample fridge ingredients.", "info")
+    session["guest_ingredients"] = []
+    flash("Guest mode started. Add ingredients to try the recommendation features.", "info")
     return redirect(url_for("dashboard"))
 
 
@@ -449,7 +441,23 @@ def dashboard():
 def add_ingredient():
     """Add a new ingredient to the user's fridge."""
     if session.get("guest"):
-        flash("Guest mode is read-only. Register to save ingredients.", "warning")
+        name = request.form.get("name", "").strip()
+        exp = request.form.get("expiration_date", "").strip() or None
+
+        if not name:
+            flash("Ingredient name is required.", "danger")
+            return redirect(url_for("dashboard"))
+
+        guest_ingredients = session.get("guest_ingredients", [])
+        next_id = max((item["id"] for item in guest_ingredients), default=0) + 1
+        guest_ingredients.append({
+            "id": next_id,
+            "name": name,
+            "date_added": date.today().isoformat(),
+            "expiration_date": exp,
+        })
+        session["guest_ingredients"] = guest_ingredients
+        flash(f"'{name}' added to your temporary guest fridge!", "success")
         return redirect(url_for("dashboard"))
 
     name    = request.form.get("name", "").strip()
@@ -476,7 +484,12 @@ def add_ingredient():
 def delete_ingredient(ing_id):
     """Remove a single ingredient (only if it belongs to the current user)."""
     if session.get("guest"):
-        flash("Guest mode is read-only. Register to edit your fridge.", "warning")
+        guest_ingredients = [
+            item for item in session.get("guest_ingredients", [])
+            if item["id"] != ing_id
+        ]
+        session["guest_ingredients"] = guest_ingredients
+        flash("Ingredient removed from the temporary guest fridge.", "info")
         return redirect(url_for("dashboard"))
 
     with get_db() as conn:
