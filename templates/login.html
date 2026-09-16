@@ -54,6 +54,8 @@ login.html
           <button type="submit" class="btn btn-primary" style="width:100%;">Log In</button>
         </form>
 
+        <a href="{{ url_for('guest') }}" class="btn btn-outline" style="width:100%; margin-top:0.75rem;">Continue as Guest</a>
+
         <div class="auth-footer">
           Need an account? <a href="{{ url_for('register') }}">Register</a>
         </div>
