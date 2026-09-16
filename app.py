@@ -389,6 +389,8 @@ def login():
             ).fetchone()
 
         if user and check_password_hash(user["password"], password):
+            session.pop("guest", None)
+            session.pop("guest_ingredients", None)
             session["user_id"]  = user["id"]
             session["username"] = user["username"]
             flash(f"Welcome back, {username}!", "success")
